@@ -85,8 +85,9 @@ while True:
         req_id = parts[1] if len(parts) >= 2 else str(request_count)
         service = SERVICE_TIMES.get(req_type, 0.10)  # default אם לא מוכר
         print(f"Request #{request_count} from {addr[0]}: type={req_type} id={req_id} service={service}s")
-        while(start_time+service>time.time()):
-            pass
+        #while(start_time+service>time.time()):
+        #    pass
+        time.sleep(service)
 
         #time.sleep(service)
 

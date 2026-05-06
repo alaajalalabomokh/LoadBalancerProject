@@ -33,7 +33,7 @@ class ProjectTopo(Topo):
 
         client_link = dict(bw=5, delay='5ms', loss=0, max_queue_size=500,use_htb=True)
         server_link_h3 = dict(bw=5, delay='7ms', loss=0, max_queue_size=500, use_htb=True)
-        server_link_h4 = dict(bw=0.5, delay='150ms', loss=0, max_queue_size=500, use_htb=True)
+        server_link_h4 = dict(bw=5, delay='7ms', loss=0, max_queue_size=500, use_htb=True)
         #server_link_h4 = dict(bw=5, delay='7ms', loss=0, max_queue_size=דד100, use_htb=True)
 
         self.addLink(server1, lb_switch, cls=TCLink, **server_link_h3)  # h3 (10.0.0.3)
@@ -96,7 +96,7 @@ def run():
         #h3.cmd('pkill -9 -f "python3 server.py" || true')
         #h4.cmd('pkill -9 -f "python3 server.py" || true')
         #h3.cmd('pkill -f "python3 -u server.py" || true')
-        h4.cmd('pkill -f "python3 -u server.py" || true')
+        #h4.cmd('pkill -f "python3 -u server_fast.py" || true')
         time.sleep(1)
         h3.cmd('pkill -9 -f "python3 -u server_slow.py" || true')
         h4.cmd('pkill -9 -f "python3 -u server_fast.py" || true')
@@ -109,15 +109,15 @@ def run():
         gap_max = os.environ.get("GAP_MAX", "0.20")
         h1.proc = h1.popen(
         f'cd {BASE_DIR} && RUN_ID={run_id} RESULTS_BASE="{RESULTS_BASE}" CLIENT_ID=h1 REQUESTS="{req1}" '
-        f'GAP_MIN={gap_min} GAP_MAX={gap_max} MAX_IN_FLIGHT=30 python3 client.py > /tmp/client_h1.log 2>&1',
+        f'GAP_MIN={gap_min} GAP_MAX={gap_max} MAX_IN_FLIGHT=1 python3 client.py > /tmp/client_h1.log 2>&1',
         shell=True)
         h2.proc = h2.popen(
         f'cd {BASE_DIR} && RUN_ID={run_id} RESULTS_BASE="{RESULTS_BASE}" CLIENT_ID=h2 REQUESTS="{req2}" '
-        f'GAP_MIN={gap_min} GAP_MAX={gap_max} MAX_IN_FLIGHT=30 python3 client.py > /tmp/client_h2.log 2>&1',
+        f'GAP_MIN={gap_min} GAP_MAX={gap_max} MAX_IN_FLIGHT=1 python3 client.py > /tmp/client_h2.log 2>&1',
         shell=True)
         h5.proc = h5.popen(
         f'cd {BASE_DIR} && RUN_ID={run_id} RESULTS_BASE="{RESULTS_BASE}" CLIENT_ID=h5 REQUESTS="{req5}" '
-        f'GAP_MIN={gap_min} GAP_MAX={gap_max} MAX_IN_FLIGHT=30 python3 client.py > /tmp/client_h5.log 2>&1',
+        f'GAP_MIN={gap_min} GAP_MAX={gap_max} MAX_IN_FLIGHT=1 python3 client.py > /tmp/client_h5.log 2>&1',
         shell=True)
            
     def stop_clients():

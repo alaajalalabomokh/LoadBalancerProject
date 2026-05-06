@@ -27,7 +27,7 @@ VIP = "10.0.0.100"
 
 PORT = 5000
 
-TIMEOUT_SEC = 40
+TIMEOUT_SEC = 60
 #TIMEOUT_SEC = 20
 
 
@@ -299,13 +299,21 @@ def do_one_request(req_type: str, req_id: str):
 
        
 
+    #except Exception as e:
+
+    #    ok = False
+
+    #    resp_str = f"ERROR: {type(e).__name__}"
+
+    #    print(f"[{CLIENT_ID}] ❗ Unexpected Error: {e}")
+
     except Exception as e:
-
         ok = False
+        resp_str = f"ERROR: {type(e).__name__}: {e}"
+        print(f"[{CLIENT_ID}] ❗ Unexpected Error: {type(e).__name__}: {e}")
 
-        resp_str = f"ERROR: {type(e).__name__}"
-
-        print(f"[{CLIENT_ID}] ❗ Unexpected Error: {e}")
+        if isinstance(e, OSError):
+            print(f"[{CLIENT_ID}] OSError errno={getattr(e, 'errno', None)} strerror={getattr(e, 'strerror', None)}")
 
        
 
@@ -339,9 +347,9 @@ def pick_gap():
 
         hi = max(gap_min, gap_max)
 
-        return random.uniform(lo, hi)
+        return 0 #random.uniform(lo, hi)
 
-    return random.uniform(0.0, max(0.0, SEND_GAP_SEC))
+    return 0 #random.uniform(0.0, max(0.0, SEND_GAP_SEC))
 
 
 
